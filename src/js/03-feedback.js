@@ -1,7 +1,6 @@
 import throttle from 'lodash.throttle';
 
 const form = document.querySelector('.feedback-form');
-// console.log(form);
 const STORAGE_KEY = "feedback-form-state";
 
 form.addEventListener('submit', onFormSubmit);
@@ -11,11 +10,15 @@ updateForm();
 
 function onFormSubmit(evt) {
     evt.preventDefault();
-    const userData = localStorage.getItem(STORAGE_KEY);
-    console.log(JSON.parse(userData));
-
-    form.reset();
-    localStorage.removeItem(STORAGE_KEY);
+    
+    if (!form.elements.email.value || !form.elements.message.value) {
+        alert('Всі поля повинні бути заповнені!'); 
+    } else {
+        const userData = localStorage.getItem(STORAGE_KEY);
+        console.log(JSON.parse(userData));
+        form.reset();
+        localStorage.removeItem(STORAGE_KEY);
+    };
 };
 
 function onInput(evt) {
@@ -23,6 +26,7 @@ function onInput(evt) {
         name: form.elements.email.value,
         message: form.elements.message.value,
     };
+
     // console.log(value);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
 };
